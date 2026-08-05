@@ -1,0 +1,32 @@
+name: Auto Daily Commit
+
+on:
+  schedule:
+    # Runs at 10:00 AM UTC every day automatically
+    - cron: '0 10 * * *'
+  # Allows you to click a button on GitHub to run it manually
+  workflow_dispatch: 
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create Daily Activity
+        run: |
+          echo "Automated commit on: $(date)" >> auto_commit_log.txt
+          
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add auto_commit_log.txt
+          
+          # Only commit if there are changes
+          git diff --quiet && git diff --staged --quiet || git commit -m "Automated daily activity commit"
+          git push
