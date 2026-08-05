@@ -1,0 +1,25 @@
+# Environments
+venv/
+.env
+.venv/
+env/
+
+# Datasets & Outputs (Too large for GitHub)
+dataset/
+archive-3/
+outputs/
+*.h5
+*.keras
+
+# However, we DO want to keep the best model for others to use!
+!models/best_model.keras
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
