@@ -44,6 +44,28 @@
 
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" width="100%" />
 
+## 🔬 How It Works (The Technical Pipeline)
+
+DeepFER-Live operates on a highly optimized, 4-step computer vision pipeline that processes frames in under `50ms` to achieve real-time speed on consumer hardware:
+
+1. **Face Detection (Haar Cascade / MediaPipe)**: The webcam grabs a live video frame and scans it using a localized bounding-box algorithm to isolate human faces from the background.
+2. **Pre-processing (Grayscale & Equalization)**: The cropped face is converted to grayscale to remove unnecessary color channels. Histogram equalization is then applied to normalize shadows and harsh lighting.
+3. **Dimensionality Reduction**: The image is aggressively down-scaled to `48x48 pixels` to match the exact input dimensions of the neural network.
+4. **CNN Inference**: The processed array is passed through the pre-trained DeepFER Convolutional Neural Network. The model outputs a Softmax array of 7 probabilities, which is temporally smoothed and drawn to the UI.
+
+## 🧠 Model Architecture & Dataset
+
+This model was trained from scratch using the highly respected **FER-2013 Dataset** (originally introduced in the ICML 2013 Challenges in Representation Learning). The dataset consists of `28,709` training images and `3,589` validation images.
+
+To prevent overfitting and maximize inference speed on standard CPUs, the custom architecture utilizes:
+- Multiple staggered **Conv2D** layers for spatial feature extraction (edges, curves, micro-expressions).
+- **MaxPooling2D** layers to reduce spatial dimensions and computation load.
+- **Dropout** layers randomly deactivating neurons during training to enforce robust learning.
+- A final **Dense (Fully Connected)** layer with a `Softmax` activation function to output clear probability confidence scores.
+- Advanced **Data Augmentation** during training (random zooming, horizontal flipping, and brightness adjustment) to ensure the model generalizes perfectly to real-world webcam feeds.
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png" width="100%" />
+
 ## 📂 Project Structure
 
 ```text
